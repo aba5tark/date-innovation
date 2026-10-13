@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff1f7">
+  <title>Маленький важный вопрос 💌</title>
+  <style>
+    :root { --pink:#ff6fae; --deep:#4a2845; --cream:#fff8fc; --lav:#f0e8ff; }
+    * { box-sizing:border-box; }
+    body {
+      margin:0; min-height:100vh; overflow-x:hidden; display:grid; place-items:center;
+      padding:24px 16px; color:var(--deep);
+      font-family: ui-rounded, "Trebuchet MS", system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at 12% 15%, #ffe1ef 0, transparent 28%),
+                  radial-gradient(circle at 88% 82%, #e8dcff 0, transparent 30%),
+                  linear-gradient(135deg,#fff8fc,#fff0f6 55%,#f7f0ff);
+    }
+    .floaties { position:fixed; inset:0; overflow:hidden; pointer-events:none; z-index:0; }
+    .floaties span { position:absolute; bottom:-50px; opacity:.55; animation: rise linear infinite; }
+    .floaties span:nth-child(1){left:7%;font-size:24px;animation-duration:12s}
+    .floaties span:nth-child(2){left:21%;font-size:18px;animation-duration:15s;animation-delay:2s}
+    .floaties span:nth-child(3){left:73%;font-size:28px;animation-duration:13s;animation-delay:1s}
+    .floaties span:nth-child(4){left:89%;font-size:20px;animation-duration:17s;animation-delay:4s}
+    .floaties span:nth-child(5){left:48%;font-size:17px;animation-duration:14s;animation-delay:5s}
+    @keyframes rise { from{transform:translateY(0) rotate(0);opacity:0} 15%{opacity:.6} to{transform:translateY(-115vh) rotate(35deg);opacity:0} }
+    .card {
+      z-index:1; width:min(100%,520px); text-align:center; padding:clamp(24px,6vw,42px);
+      border:1px solid rgba(255,255,255,.9); border-radius:30px;
+      background:rgba(255,255,255,.78); box-shadow:0 22px 70px rgba(137,69,111,.14);
+      backdrop-filter: blur(12px); animation: appear .65s cubic-bezier(.2,.8,.2,1) both;
+    }
+    @keyframes appear { from{opacity:0;transform:translateY(18px) scale(.98)} to{opacity:1;transform:translateY(0) scale(1)} }
+    .sticker { width:92px;height:92px;display:grid;place-items:center;margin:0 auto 16px;border-radius:28px;
+      font-size:48px;background:linear-gradient(145deg,#ffe0ee,#f0e4ff);transform:rotate(-5deg);animation: bob 3s ease-in-out infinite; }
+    @keyframes bob { 50%{transform:rotate(5deg) translateY(-5px)} }
+    .eyebrow { margin:0 0 10px;text-transform:uppercase;letter-spacing:.13em;font-size:11px;font-weight:800;color:#c45d91; }
+    h1 { font-size:clamp(29px,7vw,42px);line-height:1.12;margin:0 0 16px;letter-spacing:-.04em; }
+    .subtitle { font-size:16px;line-height:1.65;color:#76566f;margin:0 auto 24px;max-width:350px; }
+    .buttons { display:grid;gap:12px;max-width:340px;margin:0 auto; }
+    button { border:0;border-radius:16px;padding:16px 20px;font:800 16px inherit;font-size:16px;font-weight:800;cursor:pointer;transition:transform .18s,box-shadow .18s; }
+    button:hover { transform:translateY(-2px) rotate(-.5deg); }
+    button:active { transform:scale(.98); }
+    button:disabled { cursor:wait;opacity:.7; }
+    .yes { color:white;background:linear-gradient(100deg,#ff6fae,#ff8bb7);box-shadow:0 8px 20px #ff8bb744; }
+    .ofcourse { color:#7b3b72;background:#f2e5ff; }
+    .tiny { margin-top:21px;color:#b18ba7;font-size:12px; }
+    .message { min-height:24px;margin:18px 0 0;font-weight:700;color:#b04480;line-height:1.5; }
+    .success { animation: pop .45s ease both; }
+    @keyframes pop { 50%{transform:scale(1.04)} }
+    .qr-wrap { margin:24px auto 0;padding-top:20px;border-top:1px dashed #e9c8dc; }
+    .qr-wrap summary { cursor:pointer;color:#9b668a;font-size:13px;font-weight:700; }
+    .qr { width:132px;height:132px;display:block;margin:14px auto 8px;border-radius:10px; }
+    .url { font-size:11px;word-break:break-all;color:#a9879e; }
+    .confetti { position:fixed;top:-25px;z-index:5;pointer-events:none;animation: fall 2.2s ease-in forwards; }
+    @keyframes fall { to{transform:translateY(110vh) rotate(650deg);opacity:0} }
+    @media (prefers-reduced-motion: reduce) { *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important} }
+  </style>
+</head>
+<body>
+  <div class="floaties" aria-hidden="true"><span>💗</span><span>✨</span><span>💕</span><span>💖</span><span>🌸</span></div>
+  <main class="card">
+    <div class="sticker" aria-hidden="true">🐻💌</div>
+    <p class="eyebrow">маленький важный вопрос</p>
+    <h1>Пойдёшь со мной<br>на свидание?</h1>
+    <p class="subtitle">Обещаю милые моменты, вкусняшки и повод улыбаться 🥹🌷</p>
+    <div class="buttons">
+      <button class="yes" data-answer="Да! 💗">Да! 💗</button>
+      <button class="ofcourse" data-answer="Конечно да! 💖">Конечно да! 💖</button>
+    </div>
+    <p class="message" id="message" role="status" aria-live="polite"></p>
+    <p class="tiny">P.S. Тут правильных ответов подозрительно много 🐣</p>
+    <details class="qr-wrap">
+      <summary>Показать QR-код этой странички</summary>
+      <img class="qr" src="data:image/png;base64,{{ qr_data }}" alt="QR-код приглашения">
+      <div class="url">{{ public_url }}</div>
+    </details>
+  </main>
+<script>
+  const message = document.getElementById('message');
+  const buttons = [...document.querySelectorAll('button[data-answer]')];
+
+  function sprinkle() {
+    const pieces = ['💗','💖','💕','✨','🌸','💘'];
+    for (let i = 0; i < 24; i++) {
+      const el = document.createElement('span');
+      el.className = 'confetti';
+      el.textContent = pieces[Math.floor(Math.random() * pieces.length)];
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.fontSize = (14 + Math.random() * 18) + 'px';
+      el.style.animationDelay = (Math.random() * .35) + 's';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 2600);
+    }
+  }
+
+  buttons.forEach(button => button.addEventListener('click', async () => {
+    buttons.forEach(b => b.disabled = true);
+    message.textContent = 'Отправляем твоё сердечко… 💌';
+    try {
+      const response = await fetch('/respond', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({answer: button.dataset.answer})
+      });
+      const data = await response.json();
+      if (!response.ok || !data.ok) throw new Error(data.error || 'Что-то пошло не так.');
+      message.textContent = button.dataset.answer === 'Да! 💗'
+        ? 'Урааа! 💗 Тогда это официально начало чего-то милого!'
+        : 'ААА, двойное да! 💖 Уже улыбаюсь до ушей!';
+      message.classList.add('success');
+      sprinkle();
+    } catch (error) {
+      message.textContent = 'Ой! Не получилось отправить ответ. Попробуй ещё раз чуть позже 🥺';
+      buttons.forEach(b => b.disabled = false);
+      console.error(error);
+    }
+  }));
+</script>
+</body>
+</html>
